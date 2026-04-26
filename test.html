@@ -5,350 +5,364 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MonProduit — Landing Page</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    * { box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; scroll-behavior: smooth; }
     h1, h2, h3, h4, nav { font-family: 'Syne', sans-serif; }
+
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: #000; transition: width .25s; }
+    .nav-link:hover::after { width: 100%; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp .6s ease both; }
+    .delay-1 { animation-delay: .1s; }
+    .delay-2 { animation-delay: .22s; }
+    .delay-3 { animation-delay: .34s; }
+    .delay-4 { animation-delay: .46s; }
+
     details summary::-webkit-details-marker { display: none; }
     details[open] .arrow { transform: rotate(180deg); }
-    .arrow { transition: transform 0.2s; display: inline-block; }
+    .arrow { transition: transform .2s; display: inline-block; }
+
+    .benefit-card { transition: transform .2s, box-shadow .2s; }
+    .benefit-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+
+    .pricing-highlight { background: #000; color: #fff; }
+
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    .logo-strip { overflow: hidden; }
+    .logo-inner { display: flex; gap: 3rem; align-items: center; animation: scrollX 18s linear infinite; width: max-content; }
+    @keyframes scrollX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .testi-card { flex: 0 0 300px; }
+    @media (max-width: 768px) { .testi-card { flex: 0 0 85vw; } }
+
+    img { max-width: 100%; height: auto; display: block; }
+    ::-webkit-scrollbar { display: none; }
   </style>
 </head>
-<body class="bg-white text-gray-900">
+<body class="bg-white text-gray-900 overflow-x-hidden">
 
-  <!-- ===== 1. NAVBAR ===== -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
-    <a href="#" class="font-bold text-xl tracking-tight">MonProduit</a>
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 px-5 md:px-10 py-4 flex items-center justify-between">
+    <a href="#" class="font-extrabold text-xl tracking-tight">MonProduit</a>
     <ul class="hidden md:flex gap-8 text-sm font-medium text-gray-600">
-      <li><a href="#benefits" class="hover:text-black transition">Fonctionnalités</a></li>
-      <li><a href="#how" class="hover:text-black transition">Comment ça marche</a></li>
-      <li><a href="#pricing" class="hover:text-black transition">Tarifs</a></li>
-      <li><a href="#faq" class="hover:text-black transition">FAQ</a></li>
+      <li><a href="#benefits" class="nav-link hover:text-black transition">Fonctionnalités</a></li>
+      <li><a href="#how" class="nav-link hover:text-black transition">Comment ça marche</a></li>
+      <li><a href="#pricing" class="nav-link hover:text-black transition">Tarifs</a></li>
+      <li><a href="#faq" class="nav-link hover:text-black transition">FAQ</a></li>
     </ul>
-    <a href="#cta" class="bg-black text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-gray-800 transition">
-      Commencer gratuitement →
-    </a>
+    <div class="hidden md:flex items-center gap-3">
+      <a href="#" class="text-sm text-gray-600 hover:text-black font-medium transition">Connexion</a>
+      <a href="#cta" class="bg-black text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition">Commencer →</a>
+    </div>
+    <button onclick="document.getElementById('mobile-menu').classList.toggle('open')" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
   </nav>
 
-  <!-- ===== 2. LOGOS CLIENTS ===== -->
-  <div class="border-b border-gray-100 py-5 px-6 flex items-center justify-center gap-10 flex-wrap text-gray-300 text-sm font-semibold tracking-widest uppercase">
-    <span>Acme Co</span>
-    <span>Stripe</span>
-    <span>Notion</span>
-    <span>Vercel</span>
-    <span>Linear</span>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="fixed top-[65px] inset-x-0 z-40 flex-col bg-white border-b border-gray-100 px-5 py-4 gap-4 shadow-sm md:hidden">
+    <a href="#benefits" onclick="document.getElementById('mobile-menu').classList.remove('open')" class="text-base font-medium py-2 border-b border-gray-100">Fonctionnalités</a>
+    <a href="#how" onclick="document.getElementById('mobile-menu').classList.remove('open')" class="text-base font-medium py-2 border-b border-gray-100">Comment ça marche</a>
+    <a href="#pricing" onclick="document.getElementById('mobile-menu').classList.remove('open')" class="text-base font-medium py-2 border-b border-gray-100">Tarifs</a>
+    <a href="#faq" onclick="document.getElementById('mobile-menu').classList.remove('open')" class="text-base font-medium py-2">FAQ</a>
+    <a href="#cta" class="mt-2 bg-black text-white text-center py-3 rounded-full font-semibold text-sm">Commencer gratuitement →</a>
   </div>
 
-  <!-- ===== 3. HERO ===== -->
-  <section class="max-w-3xl mx-auto text-center py-28 px-6">
-    <span class="bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1.5 rounded-full uppercase tracking-widest mb-6 inline-block">
-      Nouveau — Version 2.0 disponible
-    </span>
-    <h1 class="text-6xl font-extrabold leading-[1.1] tracking-tight mb-6">
-      Crée des landing pages<br />
-      <span class="text-gray-400">qui convertissent vraiment</span>
-    </h1>
-    <p class="text-xl text-gray-500 mb-10 max-w-xl mx-auto leading-relaxed">
-      Arrête de perdre du trafic. MonProduit t'aide à construire, tester et optimiser ta landing page en quelques heures.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-3 justify-center">
-      <a href="#cta" class="bg-black text-white px-7 py-4 rounded-full text-base font-semibold hover:bg-gray-800 transition">
-        Essai gratuit — sans CB →
-      </a>
-      <a href="#demo" class="border border-gray-200 text-gray-700 px-7 py-4 rounded-full text-base font-medium hover:border-gray-400 transition">
-        Voir la démo ▶
-      </a>
-    </div>
-    <p class="text-xs text-gray-400 mt-4">+500 développeurs l'utilisent déjà</p>
-  </section>
-
-  <!-- ===== 4. DÉMO PRODUIT ===== -->
-  <div id="demo" class="max-w-4xl mx-auto px-6 mb-28">
-    <div class="aspect-video bg-gray-100 rounded-3xl overflow-hidden flex items-center justify-center border border-gray-200">
-      <!-- Remplace par une vraie vidéo : <video autoplay muted loop playsinline class="w-full h-full object-cover"><source src="demo.mp4" /></video> -->
-      <div class="text-center text-gray-400">
-        <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-105 transition">
-          <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
+  <!-- HERO -->
+  <section class="max-w-6xl mx-auto px-5 md:px-10 pt-20 pb-10 md:pt-28 md:pb-16">
+    <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+      <div class="flex-1 text-center md:text-left">
+        <span class="fade-up inline-block bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1.5 rounded-full uppercase tracking-widest mb-6">✦ Version 2.0 — maintenant disponible</span>
+        <h1 class="fade-up delay-1 text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.08] tracking-tight mb-6">
+          Des landing pages<br /><span class="text-gray-400">qui convertissent</span>
+        </h1>
+        <p class="fade-up delay-2 text-lg text-gray-500 mb-8 max-w-md mx-auto md:mx-0 leading-relaxed">
+          Arrête de perdre du trafic. Construis, teste et optimise ta landing page en quelques heures — pas en semaines.
+        </p>
+        <div class="fade-up delay-3 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+          <a href="#cta" class="bg-black text-white px-7 py-4 rounded-full text-base font-semibold hover:bg-gray-800 transition text-center">Essai gratuit — sans CB →</a>
+          <a href="#demo" class="border border-gray-200 text-gray-700 px-7 py-4 rounded-full text-base font-medium hover:border-gray-400 transition text-center flex items-center justify-center gap-2">
+            <span class="w-7 h-7 bg-black rounded-full flex items-center justify-center shrink-0">
+              <svg class="w-3 h-3 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
+            </span>
+            Voir la démo
+          </a>
         </div>
-        <p class="text-sm font-medium">Démo produit — 1 min 30</p>
-        <p class="text-xs mt-1">Remplace ce bloc par ta vraie vidéo</p>
+        <p class="fade-up delay-4 text-xs text-gray-400 mt-5">★★★★★ — 500+ développeurs satisfaits</p>
       </div>
-    </div>
-  </div>
-
-  <!-- ===== 5. BÉNÉFICES ===== -->
-  <section id="benefits" class="max-w-5xl mx-auto px-6 py-20">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl font-extrabold tracking-tight mb-4">Quels sont les avantages ?</h2>
-      <p class="text-gray-500 max-w-xl mx-auto">Tout ce dont tu as besoin pour transformer tes visiteurs en clients.</p>
-    </div>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-gray-50 rounded-2xl p-7">
-        <div class="text-3xl mb-4">⚡</div>
-        <h3 class="font-bold text-lg mb-2">Rapide à déployer</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">En ligne en moins de 10 minutes. Aucune config serveur nécessaire.</p>
-      </div>
-      <div class="bg-gray-50 rounded-2xl p-7">
-        <div class="text-3xl mb-4">📊</div>
-        <h3 class="font-bold text-lg mb-2">Analytics intégrés</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Vois exactement où les gens cliquent, partent, et convertissent.</p>
-      </div>
-      <div class="bg-gray-50 rounded-2xl p-7">
-        <div class="text-3xl mb-4">🧪</div>
-        <h3 class="font-bold text-lg mb-2">A/B testing facile</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Teste 2 versions en un clic et garde celle qui performe.</p>
-      </div>
-      <div class="bg-gray-50 rounded-2xl p-7">
-        <div class="text-3xl mb-4">🎨</div>
-        <h3 class="font-bold text-lg mb-2">100% personnalisable</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Adapte chaque couleur, police et section à ta marque.</p>
-      </div>
-      <div class="bg-gray-50 rounded-2xl p-7">
-        <div class="text-3xl mb-4">🔌</div>
-        <h3 class="font-bold text-lg mb-2">Intégrations natives</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Stripe, Mailchimp, Notion, Zapier. Tout connecté.</p>
-      </div>
-      <div class="bg-gray-50 rounded-2xl p-7">
-        <div class="text-3xl mb-4">📱</div>
-        <h3 class="font-bold text-lg mb-2">Mobile-first</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">60% du trafic vient du mobile. Chaque page est parfaite sur écran.</p>
+      <div class="flex-1 w-full max-w-lg mx-auto md:mx-0">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="Dashboard MonProduit" class="w-full object-cover" style="height:380px; object-position:top;" />
+          <div class="absolute bottom-5 left-5 bg-white rounded-2xl px-4 py-3 shadow-lg flex items-center gap-3">
+            <div class="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold text-sm">↑</div>
+            <div>
+              <p class="text-xs text-gray-500">Taux de conversion</p>
+              <p class="font-bold text-base text-gray-900">+340% ce mois</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== 6. COMMENT ÇA MARCHE ===== -->
-  <section id="how" class="bg-gray-50 py-24 px-6">
-    <div class="max-w-2xl mx-auto">
+  <!-- LOGOS -->
+  <div class="border-y border-gray-100 py-6 px-5 my-10 logo-strip">
+    <p class="text-center text-xs text-gray-400 uppercase tracking-widest font-semibold mb-5">Ils nous font confiance</p>
+    <div class="logo-inner">
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Stripe</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Notion</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Vercel</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Linear</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Figma</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Loom</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Stripe</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Notion</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Vercel</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Linear</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Figma</span>
+      <span class="text-gray-300 font-bold text-lg tracking-tight">Loom</span>
+    </div>
+  </div>
+
+  <!-- DÉMO -->
+  <div id="demo" class="max-w-5xl mx-auto px-5 md:px-10 mb-24">
+    <div class="relative rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80" alt="Démo" class="w-full object-cover" style="height:clamp(200px,40vw,480px); object-position:center;" />
+      <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+        <button class="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 md:w-8 md:h-8 ml-1" fill="black" viewBox="0 0 20 20"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
+        </button>
+      </div>
+      <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur text-xs font-medium px-3 py-1.5 rounded-full">▶ Démo complète — 1 min 45</div>
+    </div>
+  </div>
+
+  <!-- BÉNÉFICES -->
+  <section id="benefits" class="max-w-6xl mx-auto px-5 md:px-10 py-16 md:py-24">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Tout ce dont tu as besoin</h2>
+      <p class="text-gray-500 text-lg max-w-xl mx-auto">Pour transformer tes visiteurs en clients, sans prise de tête.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6 mb-6">
+      <div class="benefit-card bg-gray-50 rounded-3xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80" alt="Analytics" class="w-full object-cover" style="height:200px;" />
+        <div class="p-7">
+          <span class="text-2xl">📊</span>
+          <h3 class="font-bold text-xl mt-3 mb-2">Analytics en temps réel</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Vois exactement où les gens cliquent, partent et convertissent. Des données claires, pas du bruit.</p>
+        </div>
+      </div>
+      <div class="benefit-card bg-gray-50 rounded-3xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800&q=80" alt="A/B Testing" class="w-full object-cover" style="height:200px;" />
+        <div class="p-7">
+          <span class="text-2xl">🧪</span>
+          <h3 class="font-bold text-xl mt-3 mb-2">A/B testing en un clic</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Teste 2 versions simultanément. Le gagnant est automatiquement sélectionné quand les résultats sont significatifs.</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="benefit-card bg-gray-50 rounded-2xl p-6">
+        <div class="text-2xl mb-3">⚡</div>
+        <h3 class="font-bold mb-1">Déploiement rapide</h3>
+        <p class="text-gray-500 text-sm">En ligne en 10 minutes, sans serveur.</p>
+      </div>
+      <div class="benefit-card bg-gray-50 rounded-2xl p-6">
+        <div class="text-2xl mb-3">🎨</div>
+        <h3 class="font-bold mb-1">100% personnalisable</h3>
+        <p class="text-gray-500 text-sm">Couleurs, polices, sections — tout adapté à ta marque.</p>
+      </div>
+      <div class="benefit-card bg-gray-50 rounded-2xl p-6">
+        <div class="text-2xl mb-3">🔌</div>
+        <h3 class="font-bold mb-1">Intégrations natives</h3>
+        <p class="text-gray-500 text-sm">Stripe, Mailchimp, Zapier. Tout connecté en 2 clics.</p>
+      </div>
+      <div class="benefit-card bg-gray-50 rounded-2xl p-6">
+        <div class="text-2xl mb-3">📱</div>
+        <h3 class="font-bold mb-1">Mobile-first</h3>
+        <p class="text-gray-500 text-sm">60% du trafic vient du mobile. Parfait sur tous les écrans.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section id="how" class="bg-gray-50 py-20 md:py-28 px-5 md:px-10">
+    <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16">
-        <h2 class="text-4xl font-extrabold tracking-tight mb-4">Comment ça marche ?</h2>
-        <p class="text-gray-500">En 4 étapes simples, ta page est en ligne.</p>
+        <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Comment ça marche ?</h2>
+        <p class="text-gray-500 text-lg max-w-xl mx-auto">4 étapes simples. Première page en ligne aujourd'hui.</p>
       </div>
-      <div class="flex flex-col gap-8">
-        <div class="flex gap-5 items-start">
-          <div class="bg-black text-white rounded-full w-9 h-9 flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</div>
-          <div>
-            <h3 class="font-bold text-lg mb-1">Crée ton compte</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">30 secondes, aucune carte bancaire requise. Juste ton email.</p>
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div class="flex flex-col gap-7">
+          <div class="flex gap-5 items-start">
+            <div class="bg-black text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold shrink-0">1</div>
+            <div><h3 class="font-bold text-lg mb-1">Crée ton compte</h3><p class="text-gray-500 text-sm leading-relaxed">30 secondes, aucune carte bancaire. Juste ton email et c'est parti.</p></div>
+          </div>
+          <div class="flex gap-5 items-start">
+            <div class="bg-black text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold shrink-0">2</div>
+            <div><h3 class="font-bold text-lg mb-1">Choisis un template</h3><p class="text-gray-500 text-sm leading-relaxed">50+ templates optimisés pour la conversion. Filtrés par industrie.</p></div>
+          </div>
+          <div class="flex gap-5 items-start">
+            <div class="bg-black text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold shrink-0">3</div>
+            <div><h3 class="font-bold text-lg mb-1">Personnalise et publie</h3><p class="text-gray-500 text-sm leading-relaxed">Éditeur visuel glisser-déposer. Publie sur ton domaine en un clic.</p></div>
+          </div>
+          <div class="flex gap-5 items-start">
+            <div class="bg-black text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold shrink-0">4</div>
+            <div><h3 class="font-bold text-lg mb-1">Analyse et optimise</h3><p class="text-gray-500 text-sm leading-relaxed">Tes stats en temps réel. Teste, améliore, recommence.</p></div>
           </div>
         </div>
-        <div class="flex gap-5 items-start">
-          <div class="bg-black text-white rounded-full w-9 h-9 flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</div>
-          <div>
-            <h3 class="font-bold text-lg mb-1">Choisis un template</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Plus de 50 templates optimisés pour la conversion. Filtre par industrie.</p>
-          </div>
-        </div>
-        <div class="flex gap-5 items-start">
-          <div class="bg-black text-white rounded-full w-9 h-9 flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</div>
-          <div>
-            <h3 class="font-bold text-lg mb-1">Personnalise et publie</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Éditeur visuel glisser-déposer. Publie en un clic sur ton domaine.</p>
-          </div>
-        </div>
-        <div class="flex gap-5 items-start">
-          <div class="bg-black text-white rounded-full w-9 h-9 flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">4</div>
-          <div>
-            <h3 class="font-bold text-lg mb-1">Analyse et optimise</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Tes stats en temps réel. Teste, améliore, répète.</p>
-          </div>
+        <div class="rounded-3xl overflow-hidden shadow-xl">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80" alt="Éditeur" class="w-full object-cover" style="height:clamp(250px,35vw,420px);" />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== 7. TARIFS ===== -->
-  <section id="pricing" class="max-w-5xl mx-auto px-6 py-24">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl font-extrabold tracking-tight mb-4">Tarifs simples et transparents</h2>
-      <p class="text-gray-500">Pas de frais cachés. Change ou annule à tout moment.</p>
+  <!-- TARIFS -->
+  <section id="pricing" class="max-w-6xl mx-auto px-5 md:px-10 py-20 md:py-28">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Tarifs simples</h2>
+      <p class="text-gray-500 text-lg">Pas de frais cachés. Annule à tout moment.</p>
     </div>
-    <div class="grid md:grid-cols-3 gap-6">
-      <!-- Starter -->
-      <div class="border border-gray-200 rounded-2xl p-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="border border-gray-200 rounded-3xl p-8">
         <h3 class="font-bold text-xl mb-2">Starter</h3>
         <p class="text-gray-500 text-sm mb-6">Pour débuter et tester.</p>
         <p class="text-5xl font-extrabold mb-1">0€</p>
         <p class="text-sm text-gray-400 mb-8">Pour toujours</p>
         <ul class="text-sm text-gray-600 space-y-3 mb-8">
-          <li class="flex gap-2"><span class="text-green-500">✓</span> 1 landing page</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> 500 visites/mois</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> Templates de base</li>
+          <li class="flex gap-2"><span class="text-green-500 font-bold">✓</span> 1 landing page</li>
+          <li class="flex gap-2"><span class="text-green-500 font-bold">✓</span> 500 visites/mois</li>
+          <li class="flex gap-2"><span class="text-green-500 font-bold">✓</span> Templates de base</li>
           <li class="flex gap-2 text-gray-300"><span>✗</span> A/B testing</li>
           <li class="flex gap-2 text-gray-300"><span>✗</span> Analytics avancés</li>
         </ul>
-        <a href="#" class="block text-center border border-gray-300 text-gray-700 px-5 py-3 rounded-full font-medium text-sm hover:border-gray-500 transition">
-          Commencer gratuitement
-        </a>
+        <a href="#" class="block text-center border border-gray-300 text-gray-700 px-5 py-3 rounded-full font-semibold text-sm hover:border-gray-500 transition">Commencer gratuitement</a>
       </div>
-      <!-- Pro — recommandé -->
-      <div class="border-2 border-black rounded-2xl p-8 relative">
-        <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-4 py-1.5 rounded-full font-semibold">
-          ⭐ Le plus populaire
-        </span>
-        <h3 class="font-bold text-xl mb-2">Pro</h3>
-        <p class="text-gray-500 text-sm mb-6">Pour les projets sérieux.</p>
-        <p class="text-5xl font-extrabold mb-1">29€</p>
-        <p class="text-sm text-gray-400 mb-8">par mois</p>
-        <ul class="text-sm text-gray-600 space-y-3 mb-8">
-          <li class="flex gap-2"><span class="text-green-500">✓</span> Pages illimitées</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> 50 000 visites/mois</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> Tous les templates</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> A/B testing</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> Analytics avancés</li>
+      <div class="pricing-highlight rounded-3xl p-8 relative shadow-2xl">
+        <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-black text-xs px-4 py-1.5 rounded-full font-bold shadow whitespace-nowrap">⭐ Le plus populaire</span>
+        <h3 class="font-bold text-xl mb-2 text-white">Pro</h3>
+        <p class="text-gray-400 text-sm mb-6">Pour les projets sérieux.</p>
+        <p class="text-white text-5xl font-extrabold mb-1">29€</p>
+        <p class="text-gray-400 text-sm mb-8">par mois</p>
+        <ul class="text-sm text-gray-300 space-y-3 mb-8">
+          <li class="flex gap-2"><span class="text-green-400 font-bold">✓</span> Pages illimitées</li>
+          <li class="flex gap-2"><span class="text-green-400 font-bold">✓</span> 50 000 visites/mois</li>
+          <li class="flex gap-2"><span class="text-green-400 font-bold">✓</span> Tous les templates</li>
+          <li class="flex gap-2"><span class="text-green-400 font-bold">✓</span> A/B testing</li>
+          <li class="flex gap-2"><span class="text-green-400 font-bold">✓</span> Analytics avancés</li>
         </ul>
-        <a href="#" class="block text-center bg-black text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-gray-800 transition">
-          Commencer avec Pro →
-        </a>
+        <a href="#" class="block text-center bg-white text-black px-5 py-3 rounded-full font-bold text-sm hover:bg-gray-100 transition">Commencer avec Pro →</a>
       </div>
-      <!-- Agence -->
-      <div class="border border-gray-200 rounded-2xl p-8">
+      <div class="border border-gray-200 rounded-3xl p-8">
         <h3 class="font-bold text-xl mb-2">Agence</h3>
         <p class="text-gray-500 text-sm mb-6">Pour les équipes et agences.</p>
         <p class="text-5xl font-extrabold mb-1">99€</p>
         <p class="text-sm text-gray-400 mb-8">par mois</p>
         <ul class="text-sm text-gray-600 space-y-3 mb-8">
-          <li class="flex gap-2"><span class="text-green-500">✓</span> Tout du plan Pro</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> 10 membres d'équipe</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> Accès client</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> Marque blanche</li>
-          <li class="flex gap-2"><span class="text-green-500">✓</span> Support prioritaire</li>
+          <li class="flex gap-2"><span class="text-green-500 font-bold">✓</span> Tout du plan Pro</li>
+          <li class="flex gap-2"><span class="text-green-500 font-bold">✓</span> 10 membres d'équipe</li>
+          <li class="flex gap-2"><span class="text-green-500 font-bold">✓</span> Accès client</li>
+          <li class="flex gap-2"><span class="text-green-500 font-bold">✓</span> Marque blanche</li>
+          <li class="flex gap-2"><span class="text-green-500 font-bold">✓</span> Support prioritaire</li>
         </ul>
-        <a href="#" class="block text-center border border-gray-300 text-gray-700 px-5 py-3 rounded-full font-medium text-sm hover:border-gray-500 transition">
-          Contacter l'équipe
-        </a>
+        <a href="#" class="block text-center border border-gray-300 text-gray-700 px-5 py-3 rounded-full font-semibold text-sm hover:border-gray-500 transition">Contacter l'équipe</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== 8. TÉMOIGNAGES ===== -->
-  <section class="bg-gray-50 py-24 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-extrabold tracking-tight mb-4">Ce qu'ils en disent</h2>
-        <p class="text-gray-500">Des vrais utilisateurs, pas des témoignages inventés.</p>
+  <!-- TÉMOIGNAGES -->
+  <section class="bg-gray-50 py-20 md:py-28 px-5 md:px-10 overflow-hidden">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Ce qu'ils en disent</h2>
+        <p class="text-gray-500 text-lg">Des vrais utilisateurs, pas des témoignages inventés.</p>
       </div>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-white rounded-2xl p-7 border border-gray-100">
-          <div class="flex gap-0.5 mb-4">
-            <span class="text-yellow-400 text-lg">★★★★★</span>
-          </div>
-          <p class="text-gray-700 text-sm leading-relaxed mb-6">
-            "Mon taux de conversion est passé de 1,2% à 4,8% en deux semaines. Je recommande à tout dev qui veut livrer vite."
-          </p>
+      <div class="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory" style="-ms-overflow-style:none; scrollbar-width:none;">
+        <div class="testi-card bg-white rounded-3xl p-7 border border-gray-100 snap-start shrink-0">
+          <div class="text-yellow-400 mb-4">★★★★★</div>
+          <p class="text-gray-700 text-sm leading-relaxed mb-6">"Mon taux de conversion est passé de 1,2% à 4,8% en deux semaines. Je recommande à tout dev qui veut livrer vite."</p>
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-sm font-bold text-orange-700">AD</div>
-            <div>
-              <p class="font-semibold text-sm">Aminata Diallo</p>
-              <p class="text-xs text-gray-400">Dev freelance, Dakar</p>
-            </div>
+            <img src="https://i.pravatar.cc/80?img=47" alt="Aminata" class="w-11 h-11 rounded-full object-cover" />
+            <div><p class="font-semibold text-sm">Aminata Diallo</p><p class="text-xs text-gray-400">Dev freelance, Dakar</p></div>
           </div>
         </div>
-        <div class="bg-white rounded-2xl p-7 border border-gray-100">
-          <div class="flex gap-0.5 mb-4">
-            <span class="text-yellow-400 text-lg">★★★★★</span>
-          </div>
-          <p class="text-gray-700 text-sm leading-relaxed mb-6">
-            "J'ai livré 3 landing pages à des clients en une semaine. Impossible à faire avant sans cet outil."
-          </p>
+        <div class="testi-card bg-white rounded-3xl p-7 border border-gray-100 snap-start shrink-0">
+          <div class="text-yellow-400 mb-4">★★★★★</div>
+          <p class="text-gray-700 text-sm leading-relaxed mb-6">"J'ai livré 3 landing pages à des clients en une semaine. Impossible à faire avant sans cet outil."</p>
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-sm font-bold text-blue-700">KM</div>
-            <div>
-              <p class="font-semibold text-sm">Kofi Mensah</p>
-              <p class="text-xs text-gray-400">Fondateur, Accra Tech</p>
-            </div>
+            <img src="https://i.pravatar.cc/80?img=12" alt="Kofi" class="w-11 h-11 rounded-full object-cover" />
+            <div><p class="font-semibold text-sm">Kofi Mensah</p><p class="text-xs text-gray-400">Fondateur, Accra Tech</p></div>
           </div>
         </div>
-        <div class="bg-white rounded-2xl p-7 border border-gray-100">
-          <div class="flex gap-0.5 mb-4">
-            <span class="text-yellow-400 text-lg">★★★★★</span>
-          </div>
-          <p class="text-gray-700 text-sm leading-relaxed mb-6">
-            "Le A/B testing m'a permis de trouver le bon titre en 3 jours. Simple, puissant, efficace."
-          </p>
+        <div class="testi-card bg-white rounded-3xl p-7 border border-gray-100 snap-start shrink-0">
+          <div class="text-yellow-400 mb-4">★★★★★</div>
+          <p class="text-gray-700 text-sm leading-relaxed mb-6">"Le A/B testing m'a permis de trouver le bon titre en 3 jours. Simple, puissant, efficace."</p>
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-sm font-bold text-purple-700">SR</div>
-            <div>
-              <p class="font-semibold text-sm">Sofia Ramos</p>
-              <p class="text-xs text-gray-400">Growth marketer, Paris</p>
-            </div>
+            <img src="https://i.pravatar.cc/80?img=5" alt="Sofia" class="w-11 h-11 rounded-full object-cover" />
+            <div><p class="font-semibold text-sm">Sofia Ramos</p><p class="text-xs text-gray-400">Growth marketer, Paris</p></div>
+          </div>
+        </div>
+        <div class="testi-card bg-white rounded-3xl p-7 border border-gray-100 snap-start shrink-0">
+          <div class="text-yellow-400 mb-4">★★★★★</div>
+          <p class="text-gray-700 text-sm leading-relaxed mb-6">"Enfin un outil pensé pour les développeurs. Je peux tout customiser sans toucher à une interface nulle."</p>
+          <div class="flex items-center gap-3">
+            <img src="https://i.pravatar.cc/80?img=33" alt="Omar" class="w-11 h-11 rounded-full object-cover" />
+            <div><p class="font-semibold text-sm">Omar Traoré</p><p class="text-xs text-gray-400">CTO, SaaSify</p></div>
           </div>
         </div>
       </div>
+      <p class="text-center text-xs text-gray-400 mt-5 md:hidden">← Glisse pour voir plus →</p>
     </div>
   </section>
 
-  <!-- ===== 9. FAQ ===== -->
-  <section id="faq" class="max-w-2xl mx-auto px-6 py-24">
+  <!-- FAQ -->
+  <section id="faq" class="max-w-2xl mx-auto px-5 md:px-10 py-20 md:py-28">
     <div class="text-center mb-14">
-      <h2 class="text-4xl font-extrabold tracking-tight mb-4">Questions fréquentes</h2>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Questions fréquentes</h2>
       <p class="text-gray-500">Tout ce que tu veux savoir avant de commencer.</p>
     </div>
     <div class="divide-y divide-gray-100">
-      <details class="py-5 group">
-        <summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none">
-          C'est vraiment gratuit au début ?
-          <span class="arrow text-gray-400 text-lg">↓</span>
-        </summary>
-        <p class="mt-3 text-sm text-gray-500 leading-relaxed">
-          Oui. Le plan Starter est gratuit pour toujours, sans carte bancaire. Tu passes au Pro uniquement quand tu as besoin de plus.
-        </p>
-      </details>
-      <details class="py-5 group">
-        <summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none">
-          J'ai besoin de savoir coder ?
-          <span class="arrow text-gray-400 text-lg">↓</span>
-        </summary>
-        <p class="mt-3 text-sm text-gray-500 leading-relaxed">
-          Non. L'éditeur est 100% visuel. Mais si tu sais coder (et tu sais), tu peux injecter du HTML/CSS custom partout.
-        </p>
-      </details>
-      <details class="py-5 group">
-        <summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none">
-          Je peux utiliser mon propre domaine ?
-          <span class="arrow text-gray-400 text-lg">↓</span>
-        </summary>
-        <p class="mt-3 text-sm text-gray-500 leading-relaxed">
-          Oui, dès le plan Starter. Tu ajoutes un CNAME dans ton DNS et c'est connecté en moins de 5 minutes.
-        </p>
-      </details>
-      <details class="py-5 group">
-        <summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none">
-          Et si je veux annuler ?
-          <span class="arrow text-gray-400 text-lg">↓</span>
-        </summary>
-        <p class="mt-3 text-sm text-gray-500 leading-relaxed">
-          Annulation en un clic dans les paramètres, sans engagement. Tes pages restent actives jusqu'à la fin de la période payée.
-        </p>
-      </details>
+      <details class="py-5 group"><summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none gap-4">C'est vraiment gratuit au début ?<span class="arrow text-gray-400 text-lg shrink-0">↓</span></summary><p class="mt-3 text-sm text-gray-500 leading-relaxed">Oui. Le plan Starter est gratuit pour toujours, sans carte bancaire.</p></details>
+      <details class="py-5 group"><summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none gap-4">J'ai besoin de savoir coder ?<span class="arrow text-gray-400 text-lg shrink-0">↓</span></summary><p class="mt-3 text-sm text-gray-500 leading-relaxed">Non. L'éditeur est 100% visuel. Mais si tu sais coder, tu peux injecter du HTML/CSS custom partout.</p></details>
+      <details class="py-5 group"><summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none gap-4">Je peux utiliser mon propre domaine ?<span class="arrow text-gray-400 text-lg shrink-0">↓</span></summary><p class="mt-3 text-sm text-gray-500 leading-relaxed">Oui, dès le plan Starter. Tu ajoutes un CNAME dans ton DNS et c'est connecté en moins de 5 minutes.</p></details>
+      <details class="py-5 group"><summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none gap-4">Et si je veux annuler ?<span class="arrow text-gray-400 text-lg shrink-0">↓</span></summary><p class="mt-3 text-sm text-gray-500 leading-relaxed">Annulation en un clic dans les paramètres. Tes pages restent actives jusqu'à la fin de la période payée.</p></details>
+      <details class="py-5 group"><summary class="flex justify-between items-center cursor-pointer font-semibold text-base list-none gap-4">Mes pages sont-elles rapides ?<span class="arrow text-gray-400 text-lg shrink-0">↓</span></summary><p class="mt-3 text-sm text-gray-500 leading-relaxed">On optimise automatiquement les images, CSS et JS. 95+ sur Lighthouse en moyenne.</p></details>
     </div>
   </section>
 
-  <!-- ===== 10. CTA FINAL ===== -->
-  <section id="cta" class="px-6 pb-24">
-    <div class="max-w-4xl mx-auto bg-black text-white rounded-3xl py-20 px-10 text-center">
-      <h2 class="text-5xl font-extrabold tracking-tight mb-5">
-        Prêt à commencer ?
-      </h2>
-      <p class="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
-        Rejoins 500+ développeurs qui utilisent MonProduit pour convertir plus, plus vite.
-      </p>
-      <a href="#" class="inline-block bg-white text-black px-9 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition">
-        Essai gratuit — sans CB →
-      </a>
-      <p class="text-gray-500 text-xs mt-5">Aucune carte bancaire · Annulable à tout moment</p>
-    </div>
-  </section>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="border-t border-gray-100 px-6 py-10">
-    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-      <p class="font-bold text-gray-900">MonProduit</p>
-      <div class="flex gap-6">
-        <a href="#" class="hover:text-gray-700 transition">Mentions légales</a>
-        <a href="#" class="hover:text-gray-700 transition">Politique de confidentialité</a>
-        <a href="#" class="hover:text-gray-700 transition">Contact</a>
+  <!-- CTA FINAL -->
+  <section id="cta" class="px-5 md:px-10 pb-24">
+    <div class="max-w-5xl mx-auto relative rounded-3xl overflow-hidden" style="min-height:400px;">
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80" alt="Équipe" class="absolute inset-0 w-full h-full object-cover" style="filter:brightness(0.22);" />
+      <div class="relative z-10 text-white text-center py-20 md:py-28 px-6 md:px-16">
+        <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-5">Prêt à convertir plus ?</h2>
+        <p class="text-gray-300 text-lg mb-10 max-w-xl mx-auto">Rejoins 500+ développeurs qui utilisent MonProduit. Première page en ligne aujourd'hui.</p>
+        <a href="#" class="inline-block bg-white text-black px-9 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition">Essai gratuit — sans CB →</a>
+        <p class="text-gray-500 text-xs mt-5">Aucune carte bancaire · Annulable à tout moment</p>
       </div>
-      <p>© 2026 MonProduit. Tous droits réservés.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-100 px-5 md:px-10 py-10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-gray-400">
+      <p class="font-extrabold text-gray-900 text-lg">MonProduit</p>
+      <div class="flex flex-wrap justify-center gap-6">
+        <a href="#" class="hover:text-gray-700 transition">Mentions légales</a>
+        <a href="#" class="hover:text-gray-700 transition">Confidentialité</a>
+        <a href="#" class="hover:text-gray-700 transition">Contact</a>
+        <a href="#" class="hover:text-gray-700 transition">Blog</a>
+      </div>
+      <p>© 2026 MonProduit</p>
     </div>
   </footer>
 
